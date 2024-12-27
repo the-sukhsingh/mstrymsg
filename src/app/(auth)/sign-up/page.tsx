@@ -76,7 +76,7 @@ const SignUpPage = () => {
         variant: "success",
       });
 
-      router.replace(`/verify/${username}`);
+      router.replace(`/sign-in`);
     } catch (error) {
       console.log("error in sign-up page is ", error);
       const axiosError = error as AxiosError<ApiResponse>;
