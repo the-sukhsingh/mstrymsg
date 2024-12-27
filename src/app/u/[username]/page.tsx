@@ -130,10 +130,13 @@ const PublicPage = () => {
   };
 
   useEffect(() => {
-    if(dummyMessages.length > 0)
-    {
+    if (dummyMessages.length > 0) {
       setSuggestedMessages(dummyMessages);
     }
+
+    document.title = `Send message to @${username} | Mystry Message`;
+
+
   }, []);
 
   return (
@@ -198,40 +201,38 @@ const PublicPage = () => {
           )}
         </Button>
         <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Messages</CardTitle>
-              </CardHeader>
-          <CardContent className="flex flex-col gap-4" ref={messageContainer}>
-                {suggestedMessages.map((message, index) => (
-                  <CardDescription
-                    key={index}
-                    onClick={() => {
-                      form.setValue("content", message);
-                      if (form.formState.errors.content) {
-                        form.clearErrors("content");
-                      } else {
-                        form.trigger("content");
-                      }
-                    }}
-                    className="cursor-pointer p-4 border border-gray-200 rounded text-black text-sm text-center font-semibold message-body"
-                  >
-                    {message}
-                  </CardDescription>
-                ))}
-              </CardContent>
-              
-            </Card>
-          </div>
-        </div>
-        <div className="w-full text-center flex flex-col justify-center items-center gap-4">
-          <p className="text-lg font-bold">Get Your Message Board</p>
-          <Link href={"/sign-up"}>
-            <Button>Create Your Account</Button>
-          </Link>
+          <Card>
+            <CardHeader>
+              <CardTitle>Messages</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4" ref={messageContainer}>
+              {suggestedMessages.map((message, index) => (
+                <CardDescription
+                  key={index}
+                  onClick={() => {
+                    form.setValue("content", message);
+                    if (form.formState.errors.content) {
+                      form.clearErrors("content");
+                    } else {
+                      form.trigger("content");
+                    }
+                  }}
+                  className="cursor-pointer p-4 border border-gray-200 rounded text-black text-sm text-center font-semibold message-body"
+                >
+                  {message}
+                </CardDescription>
+              ))}
+            </CardContent>
+          </Card>
         </div>
       </div>
-    
+      <div className="w-full text-center flex flex-col justify-center items-center gap-4">
+        <p className="text-lg font-bold">Get Your Message Board</p>
+        <Link href={"/sign-up"}>
+          <Button>Create Your Account</Button>
+        </Link>
+      </div>
+    </div>
   );
 };
 
