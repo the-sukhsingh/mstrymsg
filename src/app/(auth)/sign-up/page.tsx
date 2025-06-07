@@ -68,11 +68,9 @@ const SignUpPage = () => {
     setIsSubmitting(true);
     console.log("submit data is ", data);
     try {
-      const response = await axios.post<ApiResponse>("/api/sign-up", data);
-
-      toast({
-        title: "Success",
-        description: response.data.message,
+      const response = await axios.post<ApiResponse>("/api/sign-up", data);      toast({
+        title: "🎯 Agent Recruited",
+        description: "Welcome to the mystery network. Proceed to secure login.",
         variant: "success",
       });
 
@@ -81,100 +79,177 @@ const SignUpPage = () => {
       console.log("error in sign-up page is ", error);
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        title: "Error",
-        description: axiosError.response?.data.message || "An error occurred",
+        title: "🚫 Recruitment Failed",
+        description: axiosError.response?.data.message || "Unable to establish secure identity",
         variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-200 p-2">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Join Mystry Message
-          </h1>
-          <p className="mb-4">Sign Up to Start Your anonymous adventure</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+      
+      <div className="relative w-full max-w-md">
+        {/* Back to Home Link */}
+        <div className="mb-8">
+          <Link 
+            href="/" 
+            className="inline-flex items-center text-slate-400 hover:text-white transition-colors duration-200"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Mystery
+          </Link>
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              name="username"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="username"
-                      {...field}
-                      onChange={(e) => {
-                        debounced(e.target.value);
-                        field.onChange(e);
-                      }}
-                    />
-                  </FormControl>
-                    {
-                        isCheckingUsername && <Loader2 className="animate-spin mr-2 h-4 w-4" />
-                    }
-                    <p 
-                    className={`text-sm 
-                    ${usernameMessage === "Username is unique" ? "text-green-500" : "text-red-500"}
-                    `}>
-                        {usernameMessage}
-                    </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Passowrd</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="animate-spin mr-2 h-4 w-4" /> Signing Up
-                </>
-              ) : (
-                "Sign Up"
-              )}
-            </Button>
-          </form>
-        </Form>
 
-        <div className="text-center mt-4">
-          <p>
-            Already have an account?{" "}
-            <Link href="/sign-in" className="text-blue-500 hover:text-blue-700">
-              Sign In
-            </Link>
-          </p>
+        {/* Main Card */}
+        <div className="relative group">
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-800/30 to-slate-700/30 rounded-2xl "></div>
+          <div className="relative p-8 bg-slate-800/40  border border-slate-700/50 rounded-2xl">
+            
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800/50 border border-slate-700/50 mb-6">
+                <span className="text-2xl">🕶️</span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-thin text-white mb-3 tracking-tight">
+                Join the Mystery
+              </h1>
+              <p className="text-slate-300 text-lg">Begin your anonymous journey</p>
+            </div>
+
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  name="username"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-slate-200 font-medium">Choose Your Alias</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            placeholder="Enter a mysterious username..."
+                            className="bg-slate-900/50 border-slate-600/50 text-white placeholder-slate-400 focus:border-slate-400 focus:ring-slate-400 rounded-lg h-12"
+                            {...field}
+                            onChange={(e) => {
+                              debounced(e.target.value);
+                              field.onChange(e);
+                            }}
+                          />
+                          {isCheckingUsername && (
+                            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                              <Loader2 className="animate-spin h-4 w-4 text-slate-400" />
+                            </div>
+                          )}
+                        </div>
+                      </FormControl>
+                      {usernameMessage && (
+                        <div className="flex items-center mt-2">
+                          <div className={`w-2 h-2 rounded-full mr-2 ${
+                            usernameMessage === "Username is unique" ? "bg-green-500" : "bg-red-500"
+                          }`}></div>
+                          <p className={`text-sm ${
+                            usernameMessage === "Username is unique" ? "text-green-400" : "text-red-400"
+                          }`}>
+                            {usernameMessage}
+                          </p>
+                        </div>
+                      )}
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  name="email"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-slate-200 font-medium">Secret Contact</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="your.secret@email.com" 
+                          className="bg-slate-900/50 border-slate-600/50 text-white placeholder-slate-400 focus:border-slate-400 focus:ring-slate-400 rounded-lg h-12"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  name="password"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-slate-200 font-medium">Master Key</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="password" 
+                          placeholder="Create a strong password..." 
+                          className="bg-slate-900/50 border-slate-600/50 text-white placeholder-slate-400 focus:border-slate-400 focus:ring-slate-400 rounded-lg h-12"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-white text-slate-900 hover:bg-slate-100 h-12 text-lg font-medium rounded-lg transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:hover:scale-100"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="animate-spin mr-2 h-5 w-5" />
+                      Entering the Mystery...
+                    </>
+                  ) : (
+                    "Enter the Mystery"
+                  )}
+                </Button>
+              </form>
+            </Form>
+
+            {/* Footer */}
+            <div className="mt-8 text-center">
+              <div className="flex items-center justify-center space-x-4 mb-4">
+                <div className="flex-1 h-px bg-slate-700"></div>
+                <span className="text-slate-500 text-sm">Already part of the mystery?</span>
+                <div className="flex-1 h-px bg-slate-700"></div>
+              </div>
+              <Link 
+                href="/sign-in" 
+                className="text-slate-300 hover:text-white transition-colors duration-200 underline underline-offset-4"
+              >
+                Sign In to Continue
+              </Link>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="mt-8 pt-6 border-t border-slate-700/50">
+              <div className="flex items-center justify-center space-x-6 text-slate-500 text-xs">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                  <span>Encrypted</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                  <span>Anonymous</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                  <span>Secure</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
